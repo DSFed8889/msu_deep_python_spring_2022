@@ -36,6 +36,8 @@ class TestHTMLParser(unittest.TestCase):
             html_str = '?' * rd.randint(1, 10) + ' ' * rd.randint(1, 10) + '<' + '?' * rd.randint(1, 10) + '>'
             html_str += ' ' * rd.randint(1, 10) + '?' * rd.randint(1, 10) + ' ' * rd.randint(1, 10)
             html_str += '</' + '?' * rd.randint(1, 10) + '>'
+            html_str += ' ' * rd.randint(1, 10) + '?' * rd.randint(1, 5) + '<'
+            html_str += '?' * rd.randint(1, 5) + ' ' * rd.randint(1, 10)
             html_str = self.fake.bothify(text=html_str)
             parse_html(html_str, None,  self.data_callback_mock, self.close_tag_callback_mock)
             parse_html(html_str, self.open_tag_callback_mock, None, self.close_tag_callback_mock)
