@@ -1,5 +1,4 @@
 import unittest
-from contextlib import contextmanager
 from descryptor import Data
 
 
@@ -11,39 +10,23 @@ class TestDescryptor(unittest.TestCase):
     def tearDown(self):
         print('Tear down')
 
-    @contextmanager
-    def assertNotRaises(self):
-        try:
-            yield None
-        except Exception:
-            raise AssertionError(f'{Exception.__name__} raised')
-
     def test_assign_num(self):
-        with self.assertNotRaises():
-            self.data.num = 0
-            self.data.num
-            self.assertEqual(self.data.num, 0)
-            self.data.num = 1
-            self.data.num
-            self.assertEqual(self.data.num, 1)
-            self.data.num = 2
-            self.data.num
-            self.assertEqual(self.data.num, 2)
-            self.data.num = -10000
-            self.data.num
-            self.assertEqual(self.data.num, -10000)
-            self.data.num = 500
-            self.data.num
-            self.assertEqual(self.data.num, 500)
-            self.data.num = 11111111111111
-            self.data.num
-            self.assertEqual(self.data.num, 11111111111111)
-            self.data.num = -1
-            self.data.num
-            self.assertEqual(self.data.num, -1)
-            self.data.num = -2
-            self.data.num
-            self.assertEqual(self.data.num, -2)
+        self.data.num = 0
+        self.assertEqual(self.data.num, 0)
+        self.data.num = 1
+        self.assertEqual(self.data.num, 1)
+        self.data.num = 2
+        self.assertEqual(self.data.num, 2)
+        self.data.num = -10000
+        self.assertEqual(self.data.num, -10000)
+        self.data.num = 500
+        self.assertEqual(self.data.num, 500)
+        self.data.num = 11111111111111
+        self.assertEqual(self.data.num, 11111111111111)
+        self.data.num = -1
+        self.assertEqual(self.data.num, -1)
+        self.data.num = -2
+        self.assertEqual(self.data.num, -2)
 
         with self.assertRaises(Exception):
             self.data.num = True
@@ -80,19 +63,14 @@ class TestDescryptor(unittest.TestCase):
         self.assertEqual(self.data.num, -2)
 
     def test_assign_name(self):
-        with self.assertNotRaises():
-            self.data.name = ''
-            self.data.name
-            self.assertEqual(self.data.name, '')
-            self.data.name = 'asdf'
-            self.data.name
-            self.assertEqual(self.data.name, 'asdf')
-            self.data.name = '12'
-            self.data.name
-            self.assertEqual(self.data.name, '12')
-            self.data.name = 'df sdf sdf'
-            self.data.name
-            self.assertEqual(self.data.name, 'df sdf sdf')
+        self.data.name = ''
+        self.assertEqual(self.data.name, '')
+        self.data.name = 'asdf'
+        self.assertEqual(self.data.name, 'asdf')
+        self.data.name = '12'
+        self.assertEqual(self.data.name, '12')
+        self.data.name = 'df sdf sdf'
+        self.assertEqual(self.data.name, 'df sdf sdf')
 
         with self.assertRaises(Exception):
             self.data.name = 0
@@ -123,25 +101,15 @@ class TestDescryptor(unittest.TestCase):
         self.assertEqual(self.data.name, 'df sdf sdf')
 
     def test_assign_price(self):
-        with self.assertNotRaises():
-            self.data.price = 1
-            self.data.price
+        self.data.price = 1
         self.assertEqual(self.data.price, 1)
-        with self.assertNotRaises():
-            self.data.price = 2
-            self.data.price
+        self.data.price = 2
         self.assertEqual(self.data.price, 2)
-        with self.assertNotRaises():
-            self.data.price = 10000
-            self.data.price
+        self.data.price = 10000
         self.assertEqual(self.data.price, 10000)
-        with self.assertNotRaises():
-            self.data.price = 500
-            self.data.price
+        self.data.price = 500
         self.assertEqual(self.data.price, 500)
-        with self.assertNotRaises():
-            self.data.price = 11111111111111
-            self.data.price
+        self.data.price = 11111111111111
         self.assertEqual(self.data.price, 11111111111111)
 
         with self.assertRaises(Exception):

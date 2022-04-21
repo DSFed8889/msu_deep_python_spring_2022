@@ -1,5 +1,4 @@
 import unittest
-from contextlib import contextmanager
 from meta_class import CustomMeta
 
 
@@ -25,44 +24,54 @@ class TestMetaClass(unittest.TestCase):
     def tearDown(self):
         print('Tear down')
 
-    @contextmanager
-    def assertNotRaises(self):
-        try:
-            yield None
-        except Exception:
-            raise AssertionError(f'{Exception.__name__} raised')
-
     def test_class_attrs(self):
-        with self.assertNotRaises():
-            self.assertEqual(CustomClass.custom_x, 50)
-            CustomClass.custom_line
-            CustomClass.__init__
+        self.assertEqual(CustomClass.custom_x, 50)
+        CustomClass.custom_line
+        CustomClass.__init__
         with self.assertRaises(Exception):
             CustomClass.new_attr
             CustomClass.custom_new_attr
-        with self.assertNotRaises():
-            CustomClass.new_attr = 0
-            self.assertEqual(CustomClass.custom_new_attr, 0)
-            CustomClass.new_attr = 5
-            self.assertEqual(CustomClass.custom_new_attr, 5)
-            CustomClass.custom_new_attr = 0
-            self.assertEqual(CustomClass.custom_new_attr, 0)
-            CustomClass.custom_new_attr
+        CustomClass.new_attr = 0
+        self.assertEqual(CustomClass.custom_new_attr, 0)
+        CustomClass.new_attr = 5
+        self.assertEqual(CustomClass.custom_new_attr, 5)
+        CustomClass.custom_new_attr = 0
+        self.assertEqual(CustomClass.custom_new_attr, 0)
+        CustomClass.custom_new_attr
+
+        CustomClass.__attr = 'string'
+        with self.assertRaises(Exception):
+            CustomClass.__attr
+        self.assertEqual(CustomClass.custom__TestMetaClass__attr, 'string')
+
+        self.assertEqual(CustomClass.custom_line(self.ob), 100)
 
     def test_ob_attrs(self):
-        with self.assertNotRaises():
-            self.assertEqual(self.ob.custom_x, 50)
-            self.assertEqual(self.ob.custom_val, 99)
-            self.ob.custom_line
-            self.ob.__init__
+        self.assertEqual(self.ob.custom_x, 50)
+        self.assertEqual(self.ob.custom_val, 99)
+        self.ob.custom_line
+        self.assertEqual(self.ob.custom_line(), 100)
+        self.ob.__init__
         with self.assertRaises(Exception):
             self.ob.new_attr
             self.ob.custom_new_attr
-        with self.assertNotRaises():
-            self.ob.new_attr = 0
-            self.assertEqual(self.ob.custom_new_attr, 0)
-            self.ob.new_attr = 5
-            self.assertEqual(self.ob.custom_new_attr, 5)
-            self.ob.custom_new_attr = 0
-            self.assertEqual(self.ob.custom_new_attr, 0)
-            self.ob.custom_new_attr
+        self.ob.new_attr = 0
+        self.assertEqual(self.ob.custom_new_attr, 0)
+        self.ob.new_attr = 5
+        self.assertEqual(self.ob.custom_new_attr, 5)
+        self.ob.custom_new_attr = 0
+        self.assertEqual(self.ob.custom_new_attr, 0)
+        self.ob.custom_new_attr
+
+        self.ob._attr = {'string': 120}
+        with self.assertRaises(Exception):
+            self.ob.__attr
+        self.assertEqual(self.ob.custom__attr, {'string': 120})
+
+        self.ob.__attr = 'string'
+        with self.assertRaises(Exception):
+            self.ob.__attr
+        self.assertEqual(self.ob.custom__TestMetaClass__attr, 'string')
+
+        self.assertEqual(self.ob.custom_line(), 100)
+        self.assertEqual(str(self.ob), 'Custom_by_metaclass')

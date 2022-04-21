@@ -2,7 +2,7 @@ class CustomMeta(type):
     def __new__(mcs, cls_name, cls_parents, cls_attr):
         custom_cls_attr = {}
         for name, val in cls_attr.items():
-            if name.startswith('__'):
+            if name.startswith('__') and name.endswith('__'):
                 custom_cls_attr[name] = val
             else:
                 custom_cls_attr['custom_' + name] = val
@@ -17,7 +17,7 @@ class CustomMeta(type):
             object.__setattr__(cls, 'custom_' + name, value)
 
     def __setattr__(self, key, value):
-        if hasattr(self, key):
+        if hasattr(self, key) or (key.startswith('__') and key.endswith('__')):
             super().__setattr__(key, value)
         else:
             super().__setattr__('custom_' + key, value)
