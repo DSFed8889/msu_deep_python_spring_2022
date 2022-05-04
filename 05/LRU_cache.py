@@ -1,6 +1,8 @@
 class LRUCache:
 
     def __init__(self, limit=42):
+        if type(limit) is not int:
+            raise TypeError('Limit must be int type!')
         if limit < 0:
             raise ValueError('Limit must be non negative!')
         self.limit = limit

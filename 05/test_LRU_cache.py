@@ -72,6 +72,18 @@ class TestLRUCache(unittest.TestCase):
         self.assertEqual(cache['k5'], 'five')
 
     def test_errors(self):
+        with self.assertRaises(TypeError):
+            LRUCache(True)
+        with self.assertRaises(TypeError):
+            LRUCache(False)
+        with self.assertRaises(TypeError):
+            LRUCache(4.6)
+        with self.assertRaises(TypeError):
+            LRUCache('sdfdfwk')
+        with self.assertRaises(TypeError):
+            LRUCache({'sdfdfwk': 3})
+        with self.assertRaises(TypeError):
+            LRUCache([8])
         with self.assertRaises(ValueError):
             LRUCache(-100)
         cache = LRUCache(0)
