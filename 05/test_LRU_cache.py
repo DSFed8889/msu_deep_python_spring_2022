@@ -96,3 +96,63 @@ class TestLRUCache(unittest.TestCase):
             cache[a] = 0
         with self.assertRaises(TypeError):
             cache.set(a, 0)
+
+    def test_limit_1(self):
+        cache = LRUCache(1)
+        self.assertEqual(cache['key1'], None)
+        self.assertEqual(cache['key2'], None)
+        cache['key1'] = 1
+        self.assertEqual(cache['key1'], 1)
+        self.assertEqual(cache['key2'], None)
+        cache['key2'] = 2
+        self.assertEqual(cache['key1'], None)
+        self.assertEqual(cache['key2'], 2)
+
+    def test_full_refilling(self):
+        cache = LRUCache(5)
+        for i in range(5):
+            self.assertEqual(cache[f'key{i}'], None)
+            cache[f'key{i}'] = [i] * (i + 1)
+        for i in range(5):
+            self.assertEqual(cache[f'key{i}'], [i] * (i + 1))
+        for i in range(8):
+            cache[f'new_key{i}'] = f'new_key{i} value'
+        for i in range(5):
+            self.assertEqual(cache[f'key{i}'], None)
+        for i in range(3):
+            self.assertEqual(cache[f'new_key{i}'], None)
+        for i in range(3, 8):
+            self.assertEqual(cache[f'new_key{i}'], f'new_key{i} value')
+
+    def test_homework_md(self):
+        cache = LRUCache(2)
+
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
+
+        self.assertEqual(cache.get("k3"), None)
+        self.assertEqual(cache.get("k2"), "val2")
+        self.assertEqual(cache.get("k1"), "val1")
+
+        cache.set("k3", "val3")
+
+        self.assertEqual(cache.get("k3"), "val3")
+        self.assertEqual(cache.get("k2"), None)
+        self.assertEqual(cache.get("k1"), "val1")
+
+    def test_reset_value(self):
+        cache = LRUCache(10)
+
+        for i in range(10):
+            self.assertEqual(cache[f'key{i}'], None)
+            cache[f'key{i}'] = [i] * (i + 1)
+        for i in range(10):
+            self.assertEqual(cache[f'key{i}'], [i] * (i + 1))
+        for i in range(5):
+            self.assertEqual(cache[f'key{i}'], [i] * (i + 1))
+        cache['key0'] = 'new_value'
+        for i in range(9):
+            cache[f'new_key{i}'] = [f'new_key{i}', 'value']
+        for i in range(9):
+            self.assertEqual(cache[f'new_key{i}'], [f'new_key{i}', 'value'])
+        self.assertEqual(cache['key0'], 'new_value')
