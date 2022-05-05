@@ -148,11 +148,11 @@ class TestLRUCache(unittest.TestCase):
             cache[f'key{i}'] = [i] * (i + 1)
         for i in range(10):
             self.assertEqual(cache[f'key{i}'], [i] * (i + 1))
-        for i in range(5):
-            self.assertEqual(cache[f'key{i}'], [i] * (i + 1))
         cache['key0'] = 'new_value'
         for i in range(9):
             cache[f'new_key{i}'] = [f'new_key{i}', 'value']
         for i in range(9):
             self.assertEqual(cache[f'new_key{i}'], [f'new_key{i}', 'value'])
+        for i in range(1, 10):
+            self.assertEqual(cache[f'key{i}'], None)
         self.assertEqual(cache['key0'], 'new_value')
